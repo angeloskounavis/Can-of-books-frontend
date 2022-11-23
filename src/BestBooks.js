@@ -19,6 +19,7 @@ class BestBooks extends React.Component {
       this.setState({
         books: bookResults.data
       });
+      console.log('bookresults:', bookResults);
     } catch(error) {
       console.log('GET Error: ', error.response.data);
     }
@@ -34,6 +35,19 @@ class BestBooks extends React.Component {
       });
     } catch(error) {
       console.log('POST Error: ', error.response.data);
+    }
+  };
+
+  deleteBook = async (id) => {
+    try {
+      let url = `${process.env.REACT_APP_SERVER}/books/${id}`;
+      await axios.delete(url);
+      let updatedBooks = this.state.books.filter(book => book._id !== id);
+      this.setState({
+        books: updatedBooks
+      });
+    } catch(err) {
+      console.log('DELETE Error:', err.response.data);
     }
   };
 
@@ -81,6 +95,13 @@ class BestBooks extends React.Component {
           <h3>{book.title}</h3>
           <p>{book.description}</p>
           <p>{book.status}</p>
+          <Button
+            onClick={() => this.deleteBook(book._id)}
+            variant="primary"
+            type="submit"
+          >
+            Delete Book
+          </Button>
         </Carousel.Caption>
       </Carousel.Item>
     ));

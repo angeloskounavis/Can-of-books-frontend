@@ -2,12 +2,13 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+// import { Modal, Form, Button} from 'react-bootstrap';
 
 class BookFormModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModal: false
+      // isModal: false
     };
   }
 
