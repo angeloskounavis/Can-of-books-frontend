@@ -13,7 +13,7 @@ class BestBooks extends React.Component {
 
   getBooks = async () => {
     try {
-      let bookResults = await axios.get(`${process.env.REACT_APP_SERVER}/books`);
+      let bookResults = await axios.get(`http://localhost:3002/books`);
       this.setState({
         books: bookResults.data
       });
