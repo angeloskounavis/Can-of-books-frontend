@@ -29,7 +29,7 @@ class BookFormModal extends React.Component {
           </Form.Group>
           <Form.Group className='newBookStatus' controlId="newBookStatus">
             <Form.Label>Rating</Form.Label>
-            <Form.Control type='number' placeholder='How many stars? (1 to 5)'></Form.Control>
+            <Form.Control type='input' placeholder='How many stars? (1 to 5)'></Form.Control>
           </Form.Group>
           <Button variant='primary' type='submit'>
             Submit New Book

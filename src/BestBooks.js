@@ -27,9 +27,13 @@ class BestBooks extends React.Component {
   postBook = async (aBook) => {
     console.log('postBook' );
     try {
-      await axios.post(`${process.env.REACT_APP_SERVER}/books`, aBook);
+      let addedBook = await axios.post(`${process.env.REACT_APP_SERVER}/books`, aBook);
+      console.log(addedBook);
+      this.setState({
+        books: [...this.state.books, addedBook.data]
+      });
     } catch(error) {
-      console.log('GET Error: ', error.response.data);
+      console.log('POST Error: ', error.response.data);
     }
   };
 
@@ -76,6 +80,7 @@ class BestBooks extends React.Component {
         <Carousel.Caption>
           <h3>{book.title}</h3>
           <p>{book.description}</p>
+          <p>{book.status}</p>
         </Carousel.Caption>
       </Carousel.Item>
     ));
