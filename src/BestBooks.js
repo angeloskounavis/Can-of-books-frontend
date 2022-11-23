@@ -7,17 +7,18 @@ class BestBooks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
+      books: [],
+      isModal: false
     };
   }
 
   getBooks = async () => {
     try {
-      let bookResults = await axios.get(`http://localhost:3002/books`);
+      let bookResults = await axios.get(`${process.env.REACT_APP_SERVER}/books`);
       this.setState({
         books: bookResults.data
       });
-    } catch (error) {
+    } catch(error) {
       console.log('Error: ', error.response.data);
     }
   };
@@ -56,7 +57,7 @@ class BestBooks extends React.Component {
               {carouselItems}
             </Carousel>
             <Button type="button"
-              class="btn btn-primary">Add a book
+              className="btn btn-primary">Add a book
             </Button>
           </Container>
         ) : (
