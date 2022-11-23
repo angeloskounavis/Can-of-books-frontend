@@ -10,6 +10,7 @@ class BookFormModal extends React.Component {
       isModal: false
     };
   }
+
   render() {
     return (
       <Modal
@@ -17,16 +18,16 @@ class BookFormModal extends React.Component {
         onHide={this.props.onHide}
         className='add-book-modal'
       >
-        <Form onSubmit={this.handleSubmitBook}>
-          <Form.Group className='newBookTitle'>
+        <Form onSubmit= {this.props.handleSubmitBook}>
+          <Form.Group className='newBookTitle' controlId="title">
             <Form.Label>Title</Form.Label>
             <Form.Control type='input' placeholder='Enter book title'></Form.Control>
           </Form.Group>
-          <Form.Group className='newBookDescription'>
+          <Form.Group className='newBookDescription' controlId="description">
             <Form.Label>Description</Form.Label>
             <Form.Control type='textarea' placeholder='Enter book description'></Form.Control>
           </Form.Group>
-          <Form.Group className='newBookStatus'>
+          <Form.Group className='newBookStatus' controlId="newBookStatus">
             <Form.Label>Rating</Form.Label>
             <Form.Control type='number' placeholder='How many stars? (1 to 5)'></Form.Control>
           </Form.Group>
@@ -34,8 +35,6 @@ class BookFormModal extends React.Component {
             Submit New Book
           </Button>
         </Form>
-        {/* {this.props.isModal &&
-        <p>success!</p>} */}
       </Modal>
     );
   }

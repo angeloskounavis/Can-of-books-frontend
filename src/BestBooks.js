@@ -24,13 +24,14 @@ class BestBooks extends React.Component {
     }
   };
 
-  // postBook = async (aBook) => {
-  //   try {
-  //     let addedBook = await axios.post(`${process.env.REACT_APP_SERVER}/books`, aBook);
-  //   } catch(error) {
-  //     console.log('GET Error: ', error.response.data);
-  //   }
-  // };
+  postBook = async (aBook) => {
+    console.log('postBook' );
+    try {
+      await axios.post(`${process.env.REACT_APP_SERVER}/books`, aBook);
+    } catch(error) {
+      console.log('GET Error: ', error.response.data);
+    }
+  };
 
   handleOpenFormModal = (e) => {
     e.preventDefault();
@@ -39,20 +40,23 @@ class BestBooks extends React.Component {
     });
   };
 
-  handleCloseFormModal = () => {
+  handleCloseFormModal = (e) => {
+    e.preventDefault();
     this.setState({
       isModal: false
     });
   };
 
   handleSubmitBook = (e) => {
+    console.log('handleSub');
     e.preventDefault();
     let newBook = {
       title: e.target.title.value,
       description: e.target.description.value,
-      status: e.target.status.value
+      status: e.target.newBookStatus.value
     };
     this.postBook(newBook);
+    this.handleCloseFormModal(e);
   };
 
   /* TODO: Make a GET request to your API to fetch all the books from the database  */
@@ -97,6 +101,7 @@ class BestBooks extends React.Component {
             </Button>
             <BookFormModal
               isModal = {this.state.isModal}
+              handleSubmitBook = {this.handleSubmitBook}
             >
             </BookFormModal>
           </Container>
