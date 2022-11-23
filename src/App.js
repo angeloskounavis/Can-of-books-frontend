@@ -25,7 +25,6 @@ class App extends React.Component {
               element={<BestBooks />}
             >
             </Route>
-            
             <Route
               exact path='/about'
               element={<About />}
