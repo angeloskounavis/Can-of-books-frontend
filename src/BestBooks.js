@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
-import Container from 'react-bootstrap/Container';
 import Carousel from 'react-bootstrap/Carousel';
+import { Button, Container} from 'react-bootstrap';
 
 class BestBooks extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class BestBooks extends React.Component {
 
   getBooks = async () => {
     try {
-      let bookResults = await axios.get(`${process.env.REACT_APP_SERVER}/books`);
+      let bookResults = await axios.get(`http://localhost:3002/books`);
       this.setState({
         books: bookResults.data
       });
@@ -55,6 +55,9 @@ class BestBooks extends React.Component {
             <Carousel>
               {carouselItems}
             </Carousel>
+            <Button type="button"
+              class="btn btn-primary">Add a book
+            </Button>
           </Container>
         ) : (
           <h3>No Books Found :(</h3>
