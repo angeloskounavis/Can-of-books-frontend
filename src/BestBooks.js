@@ -3,13 +3,16 @@ import React from 'react';
 import BookFormModal from './BookFormModal';
 import Carousel from 'react-bootstrap/Carousel';
 import { Button, Container} from 'react-bootstrap';
+import UpdateBookForm from './UpdateBookForm';
 
 class BestBooks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       books: [],
-      isModal: false
+      isAddBookModal: false,
+      isUpdateModal: false,
+      updatedBook: null
     };
   }
 
@@ -51,17 +54,52 @@ class BestBooks extends React.Component {
     }
   };
 
+  updateBook = async (bookToUpdate) => {
+    console.log(bookToUpdate);
+    try {
+      let url = `${process.env.REACT_APP_SERVER}/books/${bookToUpdate._id}`;
+      let updatedBookObj = await axios.put(url, bookToUpdate);
+
+      // find the book we updated in state, replace w/ data we got back from DB
+      let updatedBooksArr = this.state.books.map(book => {
+        return book._id === bookToUpdate._id
+          ? updatedBookObj.data
+          : book;
+      });
+      this.setState({
+        books: updatedBooksArr
+      });
+    } catch(err) {
+      console.log('PUT Error:', err.response.data);
+    }
+  };
+
   handleOpenFormModal = (e) => {
     e.preventDefault();
     this.setState({
-      isModal: true
+      isAddBookModal: true
     });
   };
 
   handleCloseFormModal = (e) => {
     e.preventDefault();
     this.setState({
-      isModal: false
+      isAddBookModal: false
+    });
+  };
+
+  handleOpenUpdateModal = () => {
+    // e.preventDefault();
+    console.log('inside handleOpenUpdateModel: ', this.state.updatedBook);
+    this.setState({
+      isUpdateModal: true
+    });
+  };
+
+  handleCloseUpdateModal = () => {
+    console.log('closing modal');
+    this.setState({
+      isUpdateModal: false
     });
   };
 
@@ -77,13 +115,37 @@ class BestBooks extends React.Component {
     this.handleCloseFormModal(e);
   };
 
+  handleUpdateBookSubmit = (e) => {
+    console.log('handleUpdate');
+    e.preventDefault();
+    let bookToUpdate = {
+      title: e.target.title.value || this.state.updatedBook.title,
+      description: e.target.description.value || this.state.updatedBook.description,
+      status: e.target.newBookStatus.value || this.state.updatedBook.status,
+      _id: this.state.updatedBook._id,
+      __v: this.state.updatedBook.__v
+    };
+    this.updateBook(bookToUpdate);
+    this.handleCloseUpdateModal();
+    console.log('updateBook ran');
+  };
+
+  handleUpdateBook = (bookToUpdate) => {
+    console.log(bookToUpdate);
+    this.setState({
+      updatedBook: bookToUpdate
+    }, this.handleOpenUpdateModal);
+    // this.handleOpenUpdateModal();
+    console.log('handle open update modal is called');
+  };
+
   /* TODO: Make a GET request to your API to fetch all the books from the database  */
   componentDidMount() {
     this.getBooks();
   }
 
   render() {
-
+    console.log(this.state.books);
     let carouselItems = this.state.books.map((book) => (
       <Carousel.Item key={book._id}>
         <img
@@ -101,6 +163,13 @@ class BestBooks extends React.Component {
             type="submit"
           >
             Delete Book
+          </Button>
+          <Button
+            onClick={() => this.handleUpdateBook(book)}
+            type="button"
+            className="update-book-button"
+          >
+            Update Book
           </Button>
         </Carousel.Caption>
       </Carousel.Item>
@@ -126,10 +195,17 @@ class BestBooks extends React.Component {
               Add a book
             </Button>
             <BookFormModal
-              isModal = {this.state.isModal}
+              isAddBookModal = {this.state.isAddBookModal}
               handleSubmitBook = {this.handleSubmitBook}
             >
             </BookFormModal>
+            <UpdateBookForm
+              show={this.state.isUpdateModal}
+              onHide={this.handleCloseUpdateModal}
+              submit={this.handleUpdateBookSubmit}
+              book={this.state.updatedBook}
+            >
+            </UpdateBookForm>
           </Container>
         ) : (
           <h3>No Books Found :(</h3>
