@@ -13,7 +13,7 @@ React, bootstrap, MongoDB, express, cors, JS
 
 ## Change Log
 
-## Credit and Collaborations
+## Credit and Collaborations : Harper, Todd, Tammy, Sheyna, Justin: helped us to create the update book functionality.
 
 ### Team Agreement
 
@@ -57,3 +57,4 @@ Estimate of time needed to complete: 1hr
 Start time: 1:45pm PST / 4:45pm EST
 Finish time: _____
 Actual time needed to complete: _____
+
