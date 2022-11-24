@@ -15,7 +15,7 @@ class BookFormModal extends React.Component {
   render() {
     return (
       <Modal
-        show={this.props.isModal}
+        show={this.props.isAddBookModal}
         onHide={this.props.onHide}
         className='add-book-modal'
       >

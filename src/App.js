@@ -30,8 +30,6 @@ class App extends React.Component {
               element={<About />}
             >
             </Route>
-
-            {/* PLACEHOLDER: add a route with a path of '/about' that renders the `About` component */}
           </Routes>
           <Footer />
         </Router>
