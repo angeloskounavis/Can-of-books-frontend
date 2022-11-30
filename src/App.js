@@ -7,6 +7,7 @@ import BestBooks from './BestBooks';
 import About from './About';
 import { withAuth0 } from '@auth0/auth0-react';
 import Welcome from './Welcome';
+import Profile from './Profile';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
@@ -29,6 +30,11 @@ class App extends React.Component {
             <Route
               exact path='/about'
               element={<About />}
+            >
+            </Route>
+            <Route
+              exact path='/profile'
+              element={<Profile />}
             >
             </Route>
           </Routes>

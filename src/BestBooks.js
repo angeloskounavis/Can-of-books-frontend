@@ -2,8 +2,9 @@ import axios from 'axios';
 import React from 'react';
 import BookFormModal from './BookFormModal';
 import Carousel from 'react-bootstrap/Carousel';
-import { Button, Container} from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import UpdateBookForm from './UpdateBookForm';
+import { withAuth0 } from '@auth0/auth0-react';
 
 class BestBooks extends React.Component {
   constructor(props) {
@@ -18,25 +19,47 @@ class BestBooks extends React.Component {
 
   getBooks = async () => {
     try {
-      let bookResults = await axios.get(`${process.env.REACT_APP_SERVER}/books`);
-      this.setState({
-        books: bookResults.data
-      });
-      console.log('bookresults:', bookResults);
-    } catch(error) {
+
+      if (this.props.auth0.isAuthenticated) {
+
+        // get the token from Auth0
+        const res = await this.props.auth0.getIdTokenClaims();
+
+        // extract the token from the response
+        // MUST use double underscore
+        const jwt = res.__raw;
+        console.log(jwt); // this is as for as you need to go for today's lab. Get the token to log in the console.
+
+        // this is from the axios docs, we can send a config object to make our axios calls. We need it to send our token to the server:
+        let config = {
+          method: 'get',
+          baseURL: process.env.REACT_APP_SERVER,
+          url: '/books',
+          headers: {
+            'Authorization': `Bearer ${jwt}`
+          }
+        };
+        console.log(config);
+        let bookResults = await axios(config);
+        console.log(bookResults.data);
+        this.setState({
+          books: bookResults.data
+        });
+      }
+    } catch (error) {
       console.log('GET Error: ', error.response.data);
     }
   };
 
   postBook = async (aBook) => {
-    console.log('postBook' );
+    console.log('postBook');
     try {
       let addedBook = await axios.post(`${process.env.REACT_APP_SERVER}/books`, aBook);
       console.log(addedBook);
       this.setState({
         books: [...this.state.books, addedBook.data]
       });
-    } catch(error) {
+    } catch (error) {
       console.log('POST Error: ', error.response.data);
     }
   };
@@ -49,7 +72,7 @@ class BestBooks extends React.Component {
       this.setState({
         books: updatedBooks
       });
-    } catch(err) {
+    } catch (err) {
       console.log('DELETE Error:', err.response.data);
     }
   };
@@ -69,7 +92,7 @@ class BestBooks extends React.Component {
       this.setState({
         books: updatedBooksArr
       });
-    } catch(err) {
+    } catch (err) {
       console.log('PUT Error:', err.response.data);
     }
   };
@@ -195,8 +218,8 @@ class BestBooks extends React.Component {
               Add a book
             </Button>
             <BookFormModal
-              isAddBookModal = {this.state.isAddBookModal}
-              handleSubmitBook = {this.handleSubmitBook}
+              isAddBookModal={this.state.isAddBookModal}
+              handleSubmitBook={this.handleSubmitBook}
             >
             </BookFormModal>
             <UpdateBookForm
@@ -215,4 +238,4 @@ class BestBooks extends React.Component {
   }
 }
 
-export default BestBooks;
+export default withAuth0(BestBooks);
