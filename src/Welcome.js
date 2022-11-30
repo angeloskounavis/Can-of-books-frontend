@@ -6,7 +6,6 @@ class Welcome extends React.Component {
     return (
       <>
         <h1>Please login to see our collection of books</h1>
-        
       </>
     );
   }
